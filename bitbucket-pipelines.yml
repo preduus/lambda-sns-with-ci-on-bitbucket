@@ -1,0 +1,13 @@
+image: node:11.13.0-alpine
+
+pipelines:
+  branches:
+    master:
+      - step:
+          caches:
+            - node
+          script:
+            - apk add python3
+            - npm install && npm install -g serverless
+            - serverless config credentials --stage production --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+            - serverless deploy --stage production
